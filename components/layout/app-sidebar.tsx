@@ -18,7 +18,11 @@ export function AppSidebar() {
   return (
     <aside className="w-64 border-r bg-white p-4">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold">StoreDesk</h1>
+        <h1 className="text-2xl font-bold">
+          <Link href="/" className="text-inherit no-underline hover:opacity-80">
+            StoreDesk
+          </Link>
+        </h1>
       </div>
 
       <nav className="space-y-2">

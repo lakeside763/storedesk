@@ -23,7 +23,7 @@ export default function DashboardPage() {
           <CardContent>
             <div className="text-3xl font-bold tabular-nums">
               {isLoading ? (
-                <Skeleton className="h-8 w-24" />
+                <Skeleton className="h-4 w-24" />
               ) : (
                 (data?.totalProducts ?? 0)
               )}
@@ -38,7 +38,7 @@ export default function DashboardPage() {
           <CardContent>
             <div className="text-3xl font-bold tabular-nums">
               {isLoading ? (
-                <Skeleton className="h-8 w-24" />
+                <Skeleton className="h-4 w-24" />
               ) : (
                 (data?.lowStockProducts ?? 0)
               )}
