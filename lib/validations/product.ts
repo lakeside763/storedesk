@@ -7,4 +7,10 @@ export const createProductSchema = z.object({
   stockQuantity: z.number().min(0, "Stock quantity must be greater than 0"),
 });
 
+export const listProductsSchema = z.object({
+  page: z.number().int().min(1, "Page must be greater than 0").default(1),
+  pageSize: z.number().int().min(1, "Page size must be greater than 0").max(100).default(10),
+})
+
 export type CreateProductInput = z.infer<typeof createProductSchema>;
+export type ListProductsInput = z.infer<typeof listProductsSchema>;

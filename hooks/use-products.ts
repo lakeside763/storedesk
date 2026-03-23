@@ -3,11 +3,18 @@
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc/client";
 import type { CreateProductInput } from "@/lib/validations/product";
+import { useState } from "react";
 
 export function useProducts() {
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
+  
   const utils = trpc.useUtils();
 
-  const productsQuery = trpc.product.list.useQuery();
+  const productsQuery = trpc.product.list.useQuery({
+    page,
+    pageSize,
+  });
 
   const createProductMutation = trpc.product.create.useMutation({
     onSuccess: async () => {
@@ -24,10 +31,13 @@ export function useProducts() {
   };
 
   return {
-    products: productsQuery.data ?? [],
+    products: productsQuery.data?.items ?? [],
+    pagination: productsQuery.data?.pagination,
     isLoading: productsQuery.isLoading,
     error: productsQuery.error,
     isCreating: createProductMutation.isPending,
+    page,
+    setPage,
     createProduct,
   };
 }

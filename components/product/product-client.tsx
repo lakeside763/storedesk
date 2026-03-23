@@ -1,13 +1,22 @@
 "use client";
 
 import { ProductForm } from "@/components/product/product-form";
-import { trpc } from "@/lib/trpc/client";
 import { EmptyProductsState } from '@/components/product/empty-products-state';
 import { ProductTable } from "@/components/product/product-table";
 import { useProducts } from "@/hooks/use-products";
+import { ProductPagination } from "./product-pagination";
 
 export function ProductClient() {
-  const { products, isLoading, error, isCreating, createProduct } = useProducts();
+  const { 
+    products, 
+    isLoading, 
+    error, 
+    isCreating, 
+    createProduct,
+    pagination,
+    page,
+    setPage,
+  } = useProducts();
   
   return (
     <div className="space-y-6">
@@ -23,7 +32,14 @@ export function ProductClient() {
           <p className="text-sm text-slate-500">Loading products...</p>
         </div>
       ) : products && products.length > 0 ? (
-        <ProductTable products={products} />
+        <>
+          <ProductTable products={products} />
+          <ProductPagination
+            page={page}
+            totalPages={pagination?.totalPages ?? 0}
+            onPageChange={setPage}
+          />
+        </>
       ) :(
         <EmptyProductsState />
       )}
