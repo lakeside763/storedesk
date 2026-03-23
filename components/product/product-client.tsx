@@ -4,24 +4,16 @@ import { ProductForm } from "@/components/product/product-form";
 import { trpc } from "@/lib/trpc/client";
 import { EmptyProductsState } from '@/components/product/empty-products-state';
 import { ProductTable } from "@/components/product/product-table";
+import { useProducts } from "@/hooks/use-products";
 
 export function ProductClient() {
-  const utils = trpc.useUtils();
-
-  const { data, isLoading, error } = trpc.product.list.useQuery(); 
-
-  const createProduct = trpc.product.create.useMutation({
-    onSuccess: async() => {
-      await utils.product.list.invalidate();
-    },
-  });
+  const { products, isLoading, error, isCreating, createProduct } = useProducts();
+  
   return (
     <div className="space-y-6">
       <ProductForm 
-        isSubmitting={createProduct.isPending}
-        onSubmit={async (values) => {
-          await createProduct.mutateAsync(values);
-        }}
+        isSubmitting={isCreating}
+        onSubmit={createProduct}
       />
 
       {error ? (<p className="text-sm text-red-500">Failed to load products</p>) : null}
@@ -30,8 +22,8 @@ export function ProductClient() {
         <div className="rounded-xl border bg-white p-6">
           <p className="text-sm text-slate-500">Loading products...</p>
         </div>
-      ) : data && data.length > 0 ? (
-        <ProductTable products={data} />
+      ) : products && products.length > 0 ? (
+        <ProductTable products={products} />
       ) :(
         <EmptyProductsState />
       )}

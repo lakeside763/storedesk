@@ -1,7 +1,7 @@
 "use client";
 
+import { useProductForm } from "@/hooks/use-product-form";
 import { CreateProductInput } from "@/lib/validations/product";
-import { useState } from "react";
 
 type ProductFormProps = {
   onSubmit: (data: CreateProductInput) => Promise<void>;
@@ -12,30 +12,7 @@ export function ProductForm({
   onSubmit,
   isSubmitting = false,
 }: ProductFormProps) {
-  const [form, setForm] = useState<CreateProductInput>({
-    name: "",
-    sku: "",
-    price: 0,
-    stockQuantity: 0,
-  });
-
-  const handleChange = (
-    field: keyof CreateProductInput,
-    value: string | number
-  ) => {
-    setForm((prev) => ({ ...prev, [field]: value }))
-  }
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await onSubmit(form);
-    setForm({
-      name: "",
-      sku: "",
-      price: 0,
-      stockQuantity: 0,
-    });
-  };
+  const { form, handleChange, handleSubmit } = useProductForm({ onSubmit });
 
   return (
     <form
