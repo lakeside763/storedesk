@@ -7,4 +7,4 @@ export const createProductSchema = z.object({
   stockQuantity: z.number().min(0, "Stock quantity must be greater than 0"),
 });
 
-export type CreateProductSchema = z.infer<typeof createProductSchema>;
+export type CreateProductInput = z.infer<typeof createProductSchema>;
